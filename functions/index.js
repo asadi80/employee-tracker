@@ -22,7 +22,9 @@ const promptUser = () => {
                     "Add an employee",
                     "Update an employee role",
                     "Update an employee manager",
-                    "Delete departments, roles, and employees",
+                    "Delete departments",
+                    "Delete role",
+                    "Delete employee",
                     "EXIT",
                 ],
             },
@@ -67,9 +69,17 @@ const promptUser = () => {
                 // calling show Employees By Department fun
                 showEmployeesByDepartment();
             }
-            if (choices === "Delete departments, roles, and employees") {
-                // calling show Employees By Department fun
-                delDepRolEmp();
+            if (choices === "Delete departments") {
+                // calling deleting department fun
+                deleteDepartment();
+            }
+            if (choices === "Delete role") {
+                // calling deleting role fun
+                deleteRole();
+            }
+            if (choices === "Delete employee") {
+                // calling deleting employee fun
+                deleteEmployee();
             }
 
             if (choices === "EXIT") {
@@ -175,9 +185,9 @@ function addDepartment() {
         .then((input) => {
             const params = input.new_dep;
             const sql = `INSERT INTO department (name)VALUES (?)`;
-            db.query(sql,params,(err, result) => {
+            db.query(sql, params, (err, result) => {
                 if (err) throw err;
-                console.log(chalk.yellow.bold( input.new_dep + " Added to departments!"));
+                console.log(chalk.yellow.bold(input.new_dep + " Added to departments!"));
 
                 showDepartments();
             });
@@ -462,8 +472,8 @@ function showEmployeesByDepartment() {
     });
 };
 
-//==================================================================show role function=============================================================================/
-function delDepRolEmp() {
+//==================================================================deleting department function=============================================================================/
+function deleteDepartment() {
     clear();
     const depSql = `SELECT name, id FROM department`;
 
@@ -485,7 +495,7 @@ function delDepRolEmp() {
                 const sql = `DELETE FROM department WHERE id = ?`;
                 db.query(sql, params, (err, result) => {
                     if (err) throw err;
-                    console.log(chalk.yellow.bold("Added" + input.role + "to roles!"));
+                    console.log(chalk.yellow.bold("Department has ben deleted!"));
                 });
                 //   showing roles department
                 showDepartments();
@@ -496,6 +506,73 @@ function delDepRolEmp() {
 
 
 };
+
+//==================================================================deleting role function=============================================================================/
+function deleteRole() {
+    const roleSql = `SELECT * FROM role`;
+
+    db.query(roleSql, (err, data) => {
+        if (err) throw err;
+
+        const role = data.map(({ title, id }) => ({ name: title, value: id }));
+
+        inquirer
+            .prompt([
+                {
+                    type: 'list',
+                    name: 'role',
+                    message: "What role do you want to delete?",
+                    choices: role
+                }
+            ])
+            .then(roleChoice => {
+                const role = roleChoice.role;
+                const sql = `DELETE FROM role WHERE id = ?`;
+
+                db.query(sql, role, (err, result) => {
+                    if (err) throw err;
+                    console.log("Role has ben deleted!");
+
+                    showRoles();
+                });
+            });
+    });
+};
+
+//==================================================================deleting employee function=============================================================================/
+function deleteEmployee() {
+    // get employees from employee table 
+    const employeeSql = `SELECT * FROM employee`;
+
+    db.query(employeeSql, (err, data) => {
+        if (err) throw err;
+
+        const employees = data.map(({ id, first_name, last_name }) => ({ name: first_name + " " + last_name, value: id }));
+
+        inquirer
+            .prompt([
+                {
+                    type: 'list',
+                    name: 'name',
+                    message: "Which employee would you like to delete?",
+                    choices: employees
+                }
+            ])
+            .then(empChoice => {
+                const employee = empChoice.name;
+
+                const sql = `DELETE FROM employee WHERE id = ?`;
+
+                db.query(sql, employee, (err, result) => {
+                    if (err) throw err;
+                    console.log("Successfully Deleted!");
+
+                    showEmployees();
+                });
+            });
+    });
+};
+
 
 //==================================================================exit function=============================================================================/
 function exitApp() {

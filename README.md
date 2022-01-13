@@ -38,8 +38,6 @@ THEN I am prompted to select an employee to update and their new role and this i
 ## Screenshot
 ![Screenshot (24)](https://user-images.githubusercontent.com/89751266/149238756-32967aa5-abc5-4116-a042-e94e56ca6e96.png)
 
-
-
 ## Demo
 The following video shows an example of the application being used from the command line:
 https://watch.screencastify.com/v/XvvsRQ3YeCjXz9IUaVi1
