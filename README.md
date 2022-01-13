@@ -42,6 +42,7 @@ THEN I am prompted to select an employee to update and their new role and this i
 
 ## Demo
 The following video shows an example of the application being used from the command line:
+https://watch.screencastify.com/v/XvvsRQ3YeCjXz9IUaVi1
 
 ## Installation
 ```bash

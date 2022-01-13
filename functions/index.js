@@ -63,7 +63,7 @@ const promptUser = () => {
                 // calling update employee managerfun
                 updateEmployeeManager();
             }
-            if (choices === "Show employees by department") {
+            if (choices === "View employees by department") {
                 // calling show Employees By Department fun
                 showEmployeesByDepartment();
             }
